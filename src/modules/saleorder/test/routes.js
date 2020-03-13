@@ -31,17 +31,17 @@ describe('Saleorder CRUD routes tests', function () {
                     unitcount: 'แมน',
                     qty: 100,
                     unit_price: 200,
-                    discount: 0,
+                    discount: 10,
                     tax: 5,
-                    total_item: 21000
+                    total_item: 19990
                 }
             ],
             total: {
-                total_amount: 21000,
-                discount: 0,
-                price_untax: 21000,
-                tax: 1000,
-                total_amount_tax: 21000
+                // total_amount: 21000,
+                discount: 1000,
+                // price_untax: 21000,
+                // tax: 1000,
+                // total_amount_tax: 21000
             }
         };
         credentials = {
@@ -111,11 +111,11 @@ describe('Saleorder CRUD routes tests', function () {
                         assert.equal(resp.data.items[0].discount, mockup.items[0].discount);
                         assert.equal(resp.data.items[0].tax, mockup.items[0].tax);
                         assert.equal(resp.data.items[0].total_item, mockup.items[0].total_item);
-                        assert.equal(resp.data.total.total_amount, mockup.total.total_amount);
-                        assert.equal(resp.data.total.discount, mockup.total.discount);
-                        assert.equal(resp.data.total.price_untax, mockup.total.price_untax);
-                        assert.equal(resp.data.total.tax, mockup.total.tax);
-                        assert.equal(resp.data.total.total_amount_tax, mockup.total.total_amount_tax);
+                        assert.equal(resp.data.total.total_amount, 19990);
+                        assert.equal(resp.data.total.discount, 1000);
+                        assert.equal(resp.data.total.price_untax, 18990);
+                        assert.equal(resp.data.total.tax, 1000);
+                        assert.equal(resp.data.total.total_amount_tax, 19990);
                         done();
                     });
             });
@@ -133,7 +133,28 @@ describe('Saleorder CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.data.customer_no, mockup.customer_no);
+                assert.equal(resp.data.customer_name, mockup.customer_name);
+                assert.equal(resp.data.doc_no, mockup.doc_no);
+                assert.equal(resp.data.doc_date, mockup.doc_date);
+                assert.equal(resp.data.contact_name, mockup.contact_name);
+                assert.equal(resp.data.credit, mockup.credit);
+                assert.equal(resp.data.order_no, mockup.order_no);
+                assert.equal(resp.data.order_date, mockup.order_date);
+                assert.equal(resp.data.delivery_date, mockup.delivery_date);
+                assert.equal(resp.data.items[0].item_no, mockup.items[0].item_no);
+                assert.equal(resp.data.items[0].item_name, mockup.items[0].item_name);
+                assert.equal(resp.data.items[0].unitcount, mockup.items[0].unitcount);
+                assert.equal(resp.data.items[0].qty, mockup.items[0].qty);
+                assert.equal(resp.data.items[0].unit_price, mockup.items[0].unit_price);
+                assert.equal(resp.data.items[0].discount, mockup.items[0].discount);
+                assert.equal(resp.data.items[0].tax, mockup.items[0].tax);
+                assert.equal(resp.data.items[0].total_item, mockup.items[0].total_item);
+                assert.equal(resp.data.total.total_amount, 19990);
+                assert.equal(resp.data.total.discount, 1000);
+                assert.equal(resp.data.total.price_untax, 18990);
+                assert.equal(resp.data.total.tax, 1000);
+                assert.equal(resp.data.total.total_amount_tax, 19990);
                 done();
             });
     });
@@ -151,7 +172,7 @@ describe('Saleorder CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    name: 'name update'
+                    order_no: 'po230317-002',
                 }
                 request(app)
                     .put('/api/saleorders/' + resp.data._id)
@@ -163,7 +184,8 @@ describe('Saleorder CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        assert.equal(resp.data.name, update.name);
+                        // console.log(resp.data);
+                        assert.equal(resp.data.order_no, update.order_no);
                         done();
                     });
             });

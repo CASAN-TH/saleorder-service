@@ -7,11 +7,9 @@ var Schema = mongoose.Schema;
 var SaleorderSchema = new Schema({
     customer_no: {
         type: String,
-        required: 'Please fill a Saleorder customer_no',
     },
     customer_name: {
         type: String,
-        required: 'Please fill a Saleorder customer_name',
     },
     doc_date: {
         type: String,
@@ -19,7 +17,6 @@ var SaleorderSchema = new Schema({
     },
     contact_name: {
         type: String,
-        required: 'Please fill a Saleorder contact_name',
     },
     credit: {
         type: Number,
@@ -27,11 +24,9 @@ var SaleorderSchema = new Schema({
     },
     order_no: {
         type: String,
-        required: 'Please fill a Saleorder order_no',
     },
     order_date: {
         type: String,
-        required: 'Please fill a Saleorder order_date',
     },
     delivery_date: {
         type: String,
@@ -73,7 +68,8 @@ var SaleorderSchema = new Schema({
                     required: 'Please fill a Saleorder total_item',
                 },
             }
-        ]
+        ],
+        required: [true, 'Why no bacon?']
     },
     total: {
         type: {
