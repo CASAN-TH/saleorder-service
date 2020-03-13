@@ -11,8 +11,13 @@ var SaleorderSchema = new Schema({
     customer_name: {
         type: String,
     },
-    doc_date: {
+    doc_no: {
         type: String,
+        unique: true,
+        // default: '000'
+    },
+    doc_date: {
+        type: Date,
         required: 'Please fill a Saleorder doc_date',
     },
     contact_name: {
@@ -95,10 +100,6 @@ var SaleorderSchema = new Schema({
             },
         }
     },
-
-
-
-
     created: {
         type: Date,
         default: Date.now
@@ -129,5 +130,47 @@ var SaleorderSchema = new Schema({
         }
     }
 });
+
+SaleorderSchema.pre("save", function (next) {
+    const model = mongoose.model("Saleorder", SaleorderSchema);
+    let saleorder = this;
+
+    saleorder.total.total_amount = 0;
+    saleorder.total.tax = 0;
+    saleorder.items.forEach(function (item) {
+        saleorder.total.total_amount += (item.qty * item.unit_price) - item.discount;
+        saleorder.total.tax += (item.qty * item.unit_price) * (item.tax / 100);
+    })
+
+    saleorder.total.price_untax = saleorder.total.total_amount - saleorder.total.discount;
+    saleorder.total.total_amount_tax = saleorder.total.price_untax + saleorder.total.tax;
+
+
+
+    if (saleorder.isNew) {
+        // console.log(new Date(saleorder.doc_date.getFullYear(), saleorder.doc_date.getMonth(), 1));
+        // console.log(new Date(saleorder.doc_date.getFullYear(), saleorder.doc_date.getMonth() + 1, 1));
+        model.find({ doc_date: { $gte: new Date(saleorder.doc_date.getFullYear(), saleorder.doc_date.getMonth(), 1), $lte: new Date(saleorder.doc_date.getFullYear(), saleorder.doc_date.getMonth() + 1, 1) } }, function (err, res) {
+            if (err) {
+                next(err);
+            }
+            if (res.length === 0) {
+                // saleorder.doc_no = saleorder.doc_date.getFullYear().toString() + (saleorder.doc_date.getMonth() + 1).toString() + "001";
+                saleorder.doc_no = `${saleorder.doc_date.getFullYear()}-${(saleorder.doc_date.getMonth() + 1).toString().padStart(2, "0")}-001`
+                // console.log(saleorder);
+            } else {
+                const maxno = res.length;
+                saleorder.doc_no = `${saleorder.doc_date.getFullYear()}-${(saleorder.doc_date.getMonth() + 1).toString().padStart(2, "0")}-${(maxno+1).toString().padStart(3, "0")}`
+            }
+
+            next();
+        })
+
+    } else {
+        next();
+    }
+
+
+})
 
 mongoose.model("Saleorder", SaleorderSchema);

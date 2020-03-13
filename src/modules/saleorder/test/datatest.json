@@ -1,0 +1,25 @@
+{
+    "customer_no": "cus170317-001",
+    "customer_name": "จูเนียร์",
+    "doc_date": "2563-03-11",
+    "contact_name": "นาย กอ ขอ",
+    "credit": 10,
+    "order_no": "po230317-001",
+    "order_date": "20/03/2560",
+    "delivery_date": "20/03/2560",
+    "items": [
+        {
+            "item_no": "112234",
+            "item_name": "แมนเดย์",
+            "unitcount": "แมน",
+            "qty": 100,
+            "unit_price": 200,
+            "discount": 10,
+            "tax": 5,
+            "total_item": 19990
+        }
+    ],
+    "total": {
+        "discount": 1000
+    }
+}
