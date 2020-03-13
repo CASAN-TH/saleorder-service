@@ -94,6 +94,7 @@ describe('Saleorder CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         // console.log(resp.data);
+                        
                         assert.equal(resp.status, 200);
                         assert.equal(resp.data.customer_no, mockup.customer_no);
                         assert.equal(resp.data.customer_name, mockup.customer_name);
