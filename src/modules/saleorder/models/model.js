@@ -11,6 +11,10 @@ var SaleorderSchema = new Schema({
     customer_name: {
         type: String,
     },
+    status: {
+        type: String,
+        default:'open',
+    },
     doc_no: {
         type: String,
         unique: true,
@@ -31,7 +35,7 @@ var SaleorderSchema = new Schema({
         type: String,
     },
     order_date: {
-        type: String,
+        type: Date,
     },
     delivery_date: {
         type: String,
